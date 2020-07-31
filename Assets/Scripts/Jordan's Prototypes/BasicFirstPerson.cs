@@ -17,7 +17,7 @@ public class BasicFirstPerson : Character
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         MovementInput();
         RotationalInput();
