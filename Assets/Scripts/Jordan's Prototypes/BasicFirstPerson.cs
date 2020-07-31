@@ -5,68 +5,76 @@ using UnityEngine;
 public class BasicFirstPerson : Character
 {
     [SerializeField] private CharacterController _controller;
-    [SerializeField] private Transform _dummy;
-    [SerializeField] private float _speed;
-    [SerializeField] private Transform _gameObjectToLook;
+    [SerializeField] private Camera _playerCamera;
+    [SerializeField] private float _lookSensitivty = 1;
+    [SerializeField] private float _maxLookAngle = 160f;
 
-    private bool _split;
+    private float _verticalRotation = 0;
+
+    protected override void Start()
+    {
+        base.Start();
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     private void Update()
     {
-        Controls();
+        MovementInput();
+        RotationalInput();
+        KeyboardInput();
     }
 
-    private void Split()
+    private void KeyboardInput()
     {
-
-    }
-
-    private void Rejoin()
-    {
-
-    }
-
-    private void Controls()
-    {
-        //Cam split
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            _split = !_split;
-            if (_split)
+            if (Cursor.lockState == CursorLockMode.Locked)
             {
-                Split();
+                Cursor.lockState = CursorLockMode.None;
             }
             else
             {
-                Rejoin();
+                Cursor.lockState = CursorLockMode.Locked;
             }
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            transform.RotateTo(_gameObjectToLook.position, _speed);
-        }
-
+    private void MovementInput()
+    {
         //Movement
         Vector3 movement = Vector3.zero;
         
         if (Input.GetKey(KeyCode.W))
         {
-            movement += transform.forward;//new Vector3(0, 0, 1);
+            movement += transform.forward;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            movement += -transform.right;//new Vector3(-1, 0, 0);
+            movement += -transform.right;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            movement += -transform.forward;//new Vector3(0, 0, -1);
+            movement += -transform.forward;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            movement += transform.right;//new Vector3(1, 0, 0);
+            movement += transform.right;
         }
 
-        _controller.SimpleMove(movement * _speed);
+        if (movement != Vector3.zero)
+        {
+            _controller.SimpleMove(movement * moveSpeed);
+        }
+    }
+
+    private void RotationalInput()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * _lookSensitivty;
+        float mouseY = Input.GetAxis("Mouse Y") * _lookSensitivty;
+
+        transform.Rotate(Vector3.up * mouseX);
+
+        _verticalRotation = Mathf.Clamp(_verticalRotation - mouseY, -90, 90);
+        _playerCamera.transform.localRotation = Quaternion.Euler(_verticalRotation, 0, 0);
     }
 }

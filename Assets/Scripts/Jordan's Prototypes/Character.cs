@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour, ISaveable
 {
-    public int moveSpeed = 4;
+    [SerializeField] protected float moveSpeed = 4;
 
     protected virtual void Start()
     {

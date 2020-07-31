@@ -217,9 +217,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   _controller: {fileID: 537280938}
-  _dummy: {fileID: 0}
-  _speed: 4
-  _gameObjectToLook: {fileID: 1898834902}
+  _playerCamera: {fileID: 963194227}
+  _lookSensitivty: 1
+  _maxLookAngle: 160
 --- !u!136 &537280940
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -614,9 +614,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   _controller: {fileID: 1319830308}
-  _dummy: {fileID: 0}
-  _speed: 4
-  _gameObjectToLook: {fileID: 0}
+  _playerCamera: {fileID: 0}
+  _lookSensitivty: 3
+  _maxLookAngle: 160
 --- !u!136 &1319830310
 CapsuleCollider:
   m_ObjectHideFlags: 0
