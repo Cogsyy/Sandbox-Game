@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.XInput;
+using UnityEngine.UI;
 
 public class Weapon_Controller : MonoBehaviour
 {
@@ -25,6 +28,27 @@ public class Weapon_Controller : MonoBehaviour
     [SerializeField] private GameObject _projectile;
     [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private float _projectileSpeed = 10f;
+
+    //Ammunition & Reload Settings
+    [SerializeField] private Image _reloadBarImage;
+    [SerializeField] private TMP_Text _reloadInputText;
+    [SerializeField] private int _maxClipSize;
+    [SerializeField] private TMP_Text _maxClipSizeText;
+    [SerializeField] private int _currentClipCount;
+    [SerializeField] private TMP_Text _currentClipCountText;
+    [SerializeField] private int _ammunitionPool;
+    [SerializeField] private TMP_Text _ammunitionPoolText;
+    [SerializeField] private float _maxReloadTime;
+    [SerializeField] private float _currentReloadSpeed;
+    [SerializeField] private float _noInputReloadSpeed;
+    [SerializeField] private float _inputReloadSpeed;
+    [SerializeField] private List<float> _reloadFlagTimes;
+    // flase = Press Reload 2, true = Press Reload 1
+    [SerializeField] private List<bool> _reloadFlagBools;
+    private bool _isReloading = false;
+    private bool _isAnyReloadPressed = false;
+    private bool _isReload1Pressed = false;
+    private bool _isWaitingforNextFlag;
 
     //Hammer Settings
     [SerializeField] private GameObject _hammerObject;
@@ -54,6 +78,10 @@ public class Weapon_Controller : MonoBehaviour
     private void OnEnable()
     {
         _playerControls.PlayerOne.Enable();
+        _reloadBarImage.enabled = false;
+        _currentClipCountText.text = _currentClipCount.ToString();
+        _maxClipSizeText.text = _maxClipSize.ToString();
+        _ammunitionPoolText.text = _ammunitionPool.ToString();
         _weaponFriendUIView.gameObject.SetActive(false);
         _hammerIdleRotation = _hammerObject.transform.rotation;
     }
@@ -62,12 +90,14 @@ public class Weapon_Controller : MonoBehaviour
     {
         _grappleRay = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
+        /*
         if (Physics.Raycast(_grappleRay, out hit))
         {
             print("I'm looking at " + hit.transform.name);
         }
         else
             print("nothing to look at");
+        */
     }
 
     private void OnDisable()
@@ -83,8 +113,13 @@ public class Weapon_Controller : MonoBehaviour
         {
             if (_gunObject.activeSelf)
             {
-                GameObject bullet = Instantiate(_projectile, _projectileSpawnPoint.position, Quaternion.identity) as GameObject;
-                bullet.GetComponent<Rigidbody>().AddForce(forward * _projectileSpeed);
+                if (_currentClipCount > 0)
+                {
+                    GameObject bullet = Instantiate(_projectile, _projectileSpawnPoint.position, Quaternion.identity) as GameObject;
+                    bullet.GetComponent<Rigidbody>().AddForce(forward * _projectileSpeed);
+                    _currentClipCount--;
+                    _currentClipCountText.text = _currentClipCount.ToString();
+                }
             }
             if(_hammerObject.activeSelf)
             {
@@ -92,7 +127,6 @@ public class Weapon_Controller : MonoBehaviour
             }
         }
     }
-
     private IEnumerator SwingHammerCo(bool hit)
     {
         float t = 0;
@@ -121,6 +155,109 @@ public class Weapon_Controller : MonoBehaviour
         _hammerObject.transform.localRotation = rotation;
     }
 
+    public void Reload1(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            if (_isReloading && !_isWaitingforNextFlag)
+            {
+                _isAnyReloadPressed = true;
+                _isReload1Pressed = true;
+            }
+
+            if (_currentClipCount < _maxClipSize && !_isReloading)
+            {
+                if(_ammunitionPool > 0 && !_isFriendActive)
+                    StartCoroutine(ReloadCo());
+            }
+        }
+    }
+    public void Reload2(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            if (_isReloading && !_isWaitingforNextFlag)
+            {
+                _isAnyReloadPressed = true;
+                _isReload1Pressed = false;
+            }
+        }
+    }
+    private IEnumerator ReloadCo()
+    {
+        float t = 0;
+        int currentFlag = 0;
+        _currentReloadSpeed = _noInputReloadSpeed;
+        _reloadBarImage.enabled = true;
+        _reloadBarImage.color = Color.yellow;
+        _isReloading = true;
+        while(_isReloading)
+        {
+            t += Time.deltaTime * _currentReloadSpeed;
+            _reloadBarImage.fillAmount = t / _maxReloadTime;
+           
+            if (t < _maxReloadTime)
+            {
+                if (_reloadFlagBools[currentFlag])
+                    _reloadInputText.text = "R";
+                else _reloadInputText.text = "E";
+
+                if (t >= _reloadFlagTimes[currentFlag] && currentFlag < _reloadFlagTimes.Count - 1)
+                {
+                    currentFlag++;
+                    _reloadBarImage.color = Color.yellow;
+                    _isWaitingforNextFlag = false;
+                    _currentReloadSpeed = _noInputReloadSpeed;
+                }
+
+                if(_isAnyReloadPressed && !_isWaitingforNextFlag)
+                {
+                    if (_isReload1Pressed == _reloadFlagBools[currentFlag])
+                    {
+                        Debug.Log("Correct reload input!");
+                        _currentReloadSpeed = _inputReloadSpeed;
+                        _reloadBarImage.color = Color.green;
+                    }
+                    else
+                    {
+                        Debug.Log("Incorrect reload input");
+                        _currentReloadSpeed = _noInputReloadSpeed;
+                        _reloadBarImage.color = Color.red;
+                    }
+
+                    _isWaitingforNextFlag = true;
+                    _isAnyReloadPressed = false;
+                    _isReload1Pressed = false;
+                }
+                yield return null;
+            }
+            else
+            {
+                TransferAmmunitionFromPool();
+                _isWaitingforNextFlag = false;
+                _reloadBarImage.enabled = false;
+                _isReloading = false;
+                _reloadInputText.text = "";
+            }
+            yield return null;
+        }
+        yield return null;
+    }
+
+    private void TransferAmmunitionFromPool()
+    {
+        int reloadAmount = _maxClipSize - _currentClipCount;
+        _ammunitionPool -= reloadAmount;
+        if(_ammunitionPool < 0)
+        {
+            int overflow = _ammunitionPool * -1;
+            reloadAmount -= overflow;
+            _ammunitionPool = 0;
+        }
+        _currentClipCount += reloadAmount;
+        _currentClipCountText.text = _currentClipCount.ToString();
+        _ammunitionPoolText.text = _ammunitionPool.ToString();
+    }
     public void SplitOrMerge(InputAction.CallbackContext context)
     {
         if (context.started)

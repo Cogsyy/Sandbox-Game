@@ -52,6 +52,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Reload1",
+                    "type": "Button",
+                    "id": "c44cfb7e-a7cb-4308-81ba-bacf72fbea2f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Reload2",
+                    "type": "Button",
+                    "id": "1be08d83-9eac-463c-a197-5cef3d49a041",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -316,6 +332,28 @@
                     "processors": "",
                     "groups": "KB&M",
                     "action": "Grapple",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "179d324f-69cf-45ca-818f-097480e5feab",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KB&M",
+                    "action": "Reload1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0ab5e4c-fb8b-4605-a146-6c6d6c9f7d0f",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KB&M",
+                    "action": "Reload2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

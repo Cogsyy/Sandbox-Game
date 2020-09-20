@@ -65,6 +65,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Reload1"",
+                    ""type"": ""Button"",
+                    ""id"": ""c44cfb7e-a7cb-4308-81ba-bacf72fbea2f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Reload2"",
+                    ""type"": ""Button"",
+                    ""id"": ""1be08d83-9eac-463c-a197-5cef3d49a041"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -331,6 +347,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Grapple"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""179d324f-69cf-45ca-818f-097480e5feab"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB&M"",
+                    ""action"": ""Reload1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f0ab5e4c-fb8b-4605-a146-6c6d6c9f7d0f"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB&M"",
+                    ""action"": ""Reload2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -384,6 +422,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerOne_Split_Merge = m_PlayerOne.FindAction("Split_Merge", throwIfNotFound: true);
         m_PlayerOne_Fire = m_PlayerOne.FindAction("Fire", throwIfNotFound: true);
         m_PlayerOne_Grapple = m_PlayerOne.FindAction("Grapple", throwIfNotFound: true);
+        m_PlayerOne_Reload1 = m_PlayerOne.FindAction("Reload1", throwIfNotFound: true);
+        m_PlayerOne_Reload2 = m_PlayerOne.FindAction("Reload2", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -439,6 +479,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerOne_Split_Merge;
     private readonly InputAction m_PlayerOne_Fire;
     private readonly InputAction m_PlayerOne_Grapple;
+    private readonly InputAction m_PlayerOne_Reload1;
+    private readonly InputAction m_PlayerOne_Reload2;
     public struct PlayerOneActions
     {
         private @PlayerControls m_Wrapper;
@@ -449,6 +491,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Split_Merge => m_Wrapper.m_PlayerOne_Split_Merge;
         public InputAction @Fire => m_Wrapper.m_PlayerOne_Fire;
         public InputAction @Grapple => m_Wrapper.m_PlayerOne_Grapple;
+        public InputAction @Reload1 => m_Wrapper.m_PlayerOne_Reload1;
+        public InputAction @Reload2 => m_Wrapper.m_PlayerOne_Reload2;
         public InputActionMap Get() { return m_Wrapper.m_PlayerOne; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -476,6 +520,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Grapple.started -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnGrapple;
                 @Grapple.performed -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnGrapple;
                 @Grapple.canceled -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnGrapple;
+                @Reload1.started -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnReload1;
+                @Reload1.performed -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnReload1;
+                @Reload1.canceled -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnReload1;
+                @Reload2.started -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnReload2;
+                @Reload2.performed -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnReload2;
+                @Reload2.canceled -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnReload2;
             }
             m_Wrapper.m_PlayerOneActionsCallbackInterface = instance;
             if (instance != null)
@@ -498,6 +548,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Grapple.started += instance.OnGrapple;
                 @Grapple.performed += instance.OnGrapple;
                 @Grapple.canceled += instance.OnGrapple;
+                @Reload1.started += instance.OnReload1;
+                @Reload1.performed += instance.OnReload1;
+                @Reload1.canceled += instance.OnReload1;
+                @Reload2.started += instance.OnReload2;
+                @Reload2.performed += instance.OnReload2;
+                @Reload2.canceled += instance.OnReload2;
             }
         }
     }
@@ -537,5 +593,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnSplit_Merge(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnGrapple(InputAction.CallbackContext context);
+        void OnReload1(InputAction.CallbackContext context);
+        void OnReload2(InputAction.CallbackContext context);
     }
 }
