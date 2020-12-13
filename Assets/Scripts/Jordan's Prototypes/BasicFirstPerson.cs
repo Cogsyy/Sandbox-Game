@@ -11,9 +11,9 @@ public class BasicFirstPerson : Character
 
     private float _verticalRotation = 0;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         Cursor.lockState = CursorLockMode.Locked;
     }
 

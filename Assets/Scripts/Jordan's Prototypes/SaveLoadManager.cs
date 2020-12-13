@@ -6,10 +6,11 @@ using System.IO;
 
 public class SaveLoadManager : Singleton<SaveLoadManager>
 {
-    private List<ISaveable> _registeredSaveObjects = new List<ISaveable>();
+    private List<ISaveable> _registeredSaveables = new List<ISaveable>();
+    private Dictionary<string, string> _savedData = new Dictionary<string, string>();
     private static string SAVE_PATH;
-    const char OBJECT_DELIMITER = ',';
-    const char DATA_MEMBER_DELIMITER = '!';
+    const char KEYVALUE_DELIMITER = ',';
+    const char KEYVALUEPAIR_DELIMITER = '!';
 
     private void Start()
     {
@@ -18,22 +19,71 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     public void Register(ISaveable saveable)
     {
-
+        if (!_registeredSaveables.Contains(saveable))
+        {
+            _registeredSaveables.Add(saveable);
+        }
     }
+
+    #region Saving / loading utilities
+
+    private void AddToDictionary(string key, string data)
+    {
+        if (_savedData.ContainsKey(key))
+        {
+            _savedData[key] = data;//Update the pre-existing value
+        }
+        else
+        {
+            _savedData.Add(key, data);
+        }
+    }
+
+    private string GetFromDictionary(string key)
+    {
+        if (_savedData.ContainsKey(key))
+            return _savedData[key];
+        else
+            return "";//Consider adding error messages
+    }
+
+    public static void SetFloat(string key, float value)
+    {
+        Instance.AddToDictionary(key, value.ToString());
+    }
+
+    public static void GetFloat(string key, out float result)
+    {
+        string item = Instance.GetFromDictionary(key);
+        if (float.TryParse(item, out float value))
+            result = value;
+        else
+            result = 0;//Consider error logging
+    }
+
+    //Add more as needed here
+
+    #endregion
 
     private void SaveAll()
     {
-        //todo: Sort list by saveId of the object, 0 first, > 0 last
-
-        string allWrittenData = "";
-        for (int i = 0; i < _registeredSaveObjects.Count; i++)
+        foreach (ISaveable saveable in _registeredSaveables)
         {
-            string[] data = _registeredSaveObjects[i].WriteState();
-            for (int dataMember = 0; dataMember < data.Length; dataMember++)
+            saveable.Save();
+        }
+
+        //Save the dictionary
+        string allWrittenData = "";
+        foreach (KeyValuePair<string, string> keyValuePair in _savedData)
+        {
+            if (allWrittenData.Length <= 0)//First write
             {
-                allWrittenData += data[dataMember] + DATA_MEMBER_DELIMITER;
+                allWrittenData += (keyValuePair.Key + KEYVALUE_DELIMITER + keyValuePair.Value);
             }
-            allWrittenData += OBJECT_DELIMITER;
+            else
+            {
+                allWrittenData += (KEYVALUEPAIR_DELIMITER + keyValuePair.Key + KEYVALUE_DELIMITER + keyValuePair.Value);
+            }
         }
 
         File.WriteAllText(SAVE_PATH, allWrittenData);
@@ -43,17 +93,31 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void LoadAll()
     {
-        string allData = File.ReadAllText(SAVE_PATH);
-        string[] allObjects = allData.Split(OBJECT_DELIMITER);
-        for (int i = 0; i < allObjects.Length; i++)
-        {
-            string[] dataMembers = allObjects[i].Split(DATA_MEMBER_DELIMITER);
-            
-        }
-    }
+        _savedData = new Dictionary<string, string>();
 
-    public enum SaveIds
-    {
-        Character = 0,
+        string allWrittenData;
+        if (File.Exists(SAVE_PATH))
+        {
+            allWrittenData = File.ReadAllText(SAVE_PATH);
+        }
+        else
+        {
+            Debug.LogWarning("Can't load, no file exists at path: " + SAVE_PATH);
+            return;
+        }
+
+        string[] keyValuePairs = allWrittenData.Split(KEYVALUEPAIR_DELIMITER);
+        foreach (string keyValuePair in keyValuePairs)
+        {
+            string[] values = keyValuePair.Split(KEYVALUE_DELIMITER);
+            AddToDictionary(values[0], values[1]);
+        }
+
+        foreach (ISaveable saveable in _registeredSaveables)
+        {
+            saveable.Load();
+        }
+
+        Debug.Log("Loaded.");
     }
 }

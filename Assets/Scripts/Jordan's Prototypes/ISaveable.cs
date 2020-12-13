@@ -4,7 +4,6 @@ using UnityEngine;
 
 public interface ISaveable
 {
-    string[] WriteState();//Get the written state
-    void ReadState(string state);
-    SaveLoadManager.SaveIds GetSaveId();
+    void Save();
+    void Load();
 }
