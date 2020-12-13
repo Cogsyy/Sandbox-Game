@@ -5,22 +5,27 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.XInput;
+using Mirror;
 
-public class FP_Controller : MonoBehaviour
+public class FP_Controller : NetworkBehaviour
 {
+    [Header("DEBUG")]
+    [SerializeField] private bool _isCursorLocked; 
+
+    [Header("Objects")]
     [SerializeField] private Transform _playerBody;
     [SerializeField] private Transform _playerHead;
 
-    //Controller Type
+    [Header("Controller Type")]
     private bool _isGamepad = false;
     private bool _isKeyboard = true;
     private List<string> _gamepadSchemes = new List<string>();
 
-    // Movement
+    [Header("Movement")]
     [SerializeField] private float _jumpHeight = 2f;
     [SerializeField] private float _movementSpeed = 5f;
 
-    // Camera Look
+    [Header("Camera")]
     [SerializeField] private float _mouseSensitivity = 100f;
     [SerializeField] private float _xAnalogSensitivity = 100f;
     [SerializeField] private float _yAnalogSensitivity = 100f;
@@ -34,7 +39,8 @@ public class FP_Controller : MonoBehaviour
     private void Awake()
     {
         _playerControls = new PlayerControls();
-        Cursor.lockState = CursorLockMode.Locked;
+        if(_isCursorLocked)
+            Cursor.lockState = CursorLockMode.Locked;
 
         _gamepadSchemes.Add("XB_Gamepad");
         _gamepadSchemes.Add("PS_Gamepad");
