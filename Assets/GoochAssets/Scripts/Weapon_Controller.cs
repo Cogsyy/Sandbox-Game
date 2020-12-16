@@ -78,10 +78,25 @@ public class Weapon_Controller : MonoBehaviour
     private void OnEnable()
     {
         _playerControls.PlayerOne.Enable();
-        _reloadBarImage.enabled = false;
-        _currentClipCountText.text = _currentClipCount.ToString();
-        _maxClipSizeText.text = _maxClipSize.ToString();
-        _ammunitionPoolText.text = _ammunitionPool.ToString();
+        
+        if (_reloadBarImage != null)
+            _reloadBarImage.enabled = false;
+        
+        if (_currentClipCountText != null)
+            _currentClipCountText.text = _currentClipCount.ToString();
+        else
+            Debug.LogWarning("Warning, missing _currentClipCountText, please replace", this);
+
+        if (_maxClipSizeText != null)
+            _maxClipSizeText.text = _maxClipSize.ToString();
+        else
+            Debug.LogWarning("Warning, missing _maxClipSizeText, please replace", this);
+
+        if (_ammunitionPoolText != null)
+            _ammunitionPoolText.text = _ammunitionPool.ToString();
+        else
+            Debug.Log("Warning, missing _ammunitionPoolText, please replace", this);
+
         _weaponFriendUIView.gameObject.SetActive(false);
         _hammerIdleRotation = _hammerObject.transform.rotation;
     }

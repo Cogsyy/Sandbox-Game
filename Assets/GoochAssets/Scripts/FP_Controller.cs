@@ -17,8 +17,8 @@ public class FP_Controller : NetworkBehaviour
     [SerializeField] private Transform _playerHead;
 
     [Header("Controller Type")]
-    private bool _isGamepad = false;
-    private bool _isKeyboard = true;
+    private bool _usingGamepad = false;
+    private bool _usingKeyboard = true;
     private List<string> _gamepadSchemes = new List<string>();
 
     [Header("Movement")]
@@ -94,18 +94,17 @@ public class FP_Controller : NetworkBehaviour
         _lookVector = _playerControls.PlayerOne.FP_Camera.ReadValue<Vector2>();
         float time = Time.deltaTime;
 
-        if (_isKeyboard)
+        if (_usingKeyboard)
         {
             _xSensitivity = _mouseSensitivity;
             _ySensitivity = _mouseSensitivity;
         }
-
-        if(_isGamepad)
+        else if(_usingGamepad)
         {
             _xSensitivity = _xAnalogSensitivity;
             _ySensitivity = _yAnalogSensitivity;
         }
-
+        
         float x = _lookVector.x * _xSensitivity * time;
         float y = _lookVector.y * _ySensitivity * time;
 
@@ -122,16 +121,16 @@ public class FP_Controller : NetworkBehaviour
         {
             if (user.controlScheme.Value.name == "KB&M")
             {
-                _isKeyboard = true;
-                _isGamepad = false;
+                _usingKeyboard = true;
+                _usingGamepad = false;
 
             }
             foreach(string scheme in _gamepadSchemes)
             {
                 if(user.controlScheme.Value.name == scheme)
                 {
-                    _isKeyboard = false;
-                    _isGamepad = true;
+                    _usingKeyboard = false;
+                    _usingGamepad = true;
                 }
             }
         }
