@@ -167,8 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46a2f2bb0eefd84d990b15d16a9b968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 1347749260}
-  _receiver: {fileID: 1728619320}
+  _player: {fileID: 0}
+  _receiver: {fileID: 0}
 --- !u!65 &23461976
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -855,6 +855,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1479858238, guid: c8432f1ceee5551479fb749c671fc882, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6399796321157130388, guid: c8432f1ceee5551479fb749c671fc882,
         type: 3}
       propertyPath: m_Name
@@ -924,6 +928,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7264275371014731439, guid: c8432f1ceee5551479fb749c671fc882,
+        type: 3}
+      propertyPath: sceneId
+      value: 1815596260
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8432f1ceee5551479fb749c671fc882, type: 3}
@@ -1862,12 +1871,6 @@ Transform:
   m_Father: {fileID: 1531943090}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 52.51, z: 0}
---- !u!4 &1347749260 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4099231932044772116, guid: 318304c86730d1a4ca945c02996501d0,
-    type: 3}
-  m_PrefabInstance: {fileID: 4099231931739719899}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1479858237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,8 +1961,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46a2f2bb0eefd84d990b15d16a9b968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 1347749260}
-  _receiver: {fileID: 23461974}
+  _player: {fileID: 0}
+  _receiver: {fileID: 0}
 --- !u!65 &1728619322
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2092,10 +2095,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 439482cdc1bf4be48b9adb254e010b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _autoProjectile: {fileID: 1319566392115739125, guid: c9a4c3a14871dfd43bdb93ffab781718,
-    type: 3}
-  _autoProjectileSpawnPoint: {fileID: 140858749}
-  _autoProjectileSpeed: 2000
+  _autoProjectile: {fileID: 0}
+  _autoProjectileSpawnPoint: {fileID: 0}
+  _autoProjectileSpeed: 0
 --- !u!1 &2111155325
 GameObject:
   m_ObjectHideFlags: 0
