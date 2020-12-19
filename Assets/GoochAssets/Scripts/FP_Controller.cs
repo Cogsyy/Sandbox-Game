@@ -9,6 +9,7 @@ using Mirror;
 
 public class FP_Controller : NetworkBehaviour
 {
+    
     [Header("DEBUG")]
     [SerializeField] private bool _isCursorLocked; 
 
@@ -141,4 +142,5 @@ public class FP_Controller : NetworkBehaviour
     {
         _movementSpeed = speed;
     }
+    
 }
