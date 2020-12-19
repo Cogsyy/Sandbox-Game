@@ -934,7 +934,9 @@ PrefabInstance:
       propertyPath: sceneId
       value: 1815596260
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7264275371014731439, guid: c8432f1ceee5551479fb749c671fc882, type: 3}
+    - {fileID: 2601115153191976636, guid: c8432f1ceee5551479fb749c671fc882, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c8432f1ceee5551479fb749c671fc882, type: 3}
 --- !u!4 &592616678 stripped
 Transform:
