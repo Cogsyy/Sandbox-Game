@@ -89,6 +89,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""PhotonTestMessage"",
+                    ""type"": ""Button"",
+                    ""id"": ""b943b83e-a5c4-46f4-ae7c-b8d52e18dcab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -388,6 +396,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""ToggleCursor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1b4a7610-1418-422a-ad55-a8dd94f3eb68"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB&M"",
+                    ""action"": ""PhotonTestMessage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -444,6 +463,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerOne_Reload1 = m_PlayerOne.FindAction("Reload1", throwIfNotFound: true);
         m_PlayerOne_Reload2 = m_PlayerOne.FindAction("Reload2", throwIfNotFound: true);
         m_PlayerOne_ToggleCursor = m_PlayerOne.FindAction("ToggleCursor", throwIfNotFound: true);
+        m_PlayerOne_PhotonTestMessage = m_PlayerOne.FindAction("PhotonTestMessage", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -502,6 +522,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerOne_Reload1;
     private readonly InputAction m_PlayerOne_Reload2;
     private readonly InputAction m_PlayerOne_ToggleCursor;
+    private readonly InputAction m_PlayerOne_PhotonTestMessage;
     public struct PlayerOneActions
     {
         private @PlayerControls m_Wrapper;
@@ -515,6 +536,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Reload1 => m_Wrapper.m_PlayerOne_Reload1;
         public InputAction @Reload2 => m_Wrapper.m_PlayerOne_Reload2;
         public InputAction @ToggleCursor => m_Wrapper.m_PlayerOne_ToggleCursor;
+        public InputAction @PhotonTestMessage => m_Wrapper.m_PlayerOne_PhotonTestMessage;
         public InputActionMap Get() { return m_Wrapper.m_PlayerOne; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -551,6 +573,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @ToggleCursor.started -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnToggleCursor;
                 @ToggleCursor.performed -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnToggleCursor;
                 @ToggleCursor.canceled -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnToggleCursor;
+                @PhotonTestMessage.started -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnPhotonTestMessage;
+                @PhotonTestMessage.performed -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnPhotonTestMessage;
+                @PhotonTestMessage.canceled -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnPhotonTestMessage;
             }
             m_Wrapper.m_PlayerOneActionsCallbackInterface = instance;
             if (instance != null)
@@ -582,6 +607,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @ToggleCursor.started += instance.OnToggleCursor;
                 @ToggleCursor.performed += instance.OnToggleCursor;
                 @ToggleCursor.canceled += instance.OnToggleCursor;
+                @PhotonTestMessage.started += instance.OnPhotonTestMessage;
+                @PhotonTestMessage.performed += instance.OnPhotonTestMessage;
+                @PhotonTestMessage.canceled += instance.OnPhotonTestMessage;
             }
         }
     }
@@ -624,5 +652,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnReload1(InputAction.CallbackContext context);
         void OnReload2(InputAction.CallbackContext context);
         void OnToggleCursor(InputAction.CallbackContext context);
+        void OnPhotonTestMessage(InputAction.CallbackContext context);
     }
 }

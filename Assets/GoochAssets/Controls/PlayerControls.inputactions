@@ -76,6 +76,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "PhotonTestMessage",
+                    "type": "Button",
+                    "id": "b943b83e-a5c4-46f4-ae7c-b8d52e18dcab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -373,6 +381,17 @@
                     "processors": "",
                     "groups": "KB&M",
                     "action": "ToggleCursor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1b4a7610-1418-422a-ad55-a8dd94f3eb68",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KB&M",
+                    "action": "PhotonTestMessage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
