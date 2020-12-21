@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 644807173d1afe149abe474b21670844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isCursorLocked: 0
   _playerBody: {fileID: 4099231932044772116}
   _playerHead: {fileID: 4099231931589814122}
   _jumpHeight: 2
@@ -296,6 +297,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4099231932044772107}
         m_MethodName: Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4099231932044772107}
+        m_MethodName: ToggleCursor
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -420,6 +432,20 @@ MonoBehaviour:
     type: 3}
   _projectileSpawnPoint: {fileID: 4099231932799155131}
   _projectileSpeed: 2500
+  _reloadBarImage: {fileID: 0}
+  _reloadInputText: {fileID: 0}
+  _maxClipSize: 0
+  _maxClipSizeText: {fileID: 0}
+  _currentClipCount: 0
+  _currentClipCountText: {fileID: 0}
+  _ammunitionPool: 0
+  _ammunitionPoolText: {fileID: 0}
+  _maxReloadTime: 0
+  _currentReloadSpeed: 0
+  _noInputReloadSpeed: 0
+  _inputReloadSpeed: 0
+  _reloadFlagTimes: []
+  _reloadFlagBools: 
   _hammerObject: {fileID: 4099231932008734422}
   _swingDuration: 0.1
   _returnIdleDuration: 0.2

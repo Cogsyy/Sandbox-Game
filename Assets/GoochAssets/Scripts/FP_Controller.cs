@@ -115,6 +115,14 @@ public class FP_Controller : MonoBehaviour
         _playerBody.Rotate(Vector3.up * x);
     }
 
+    public void ToggleCursor(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Debug.Log("Escape pressed!");
+        }
+    }
+
     private void OnInputDeviceChange(InputUser user, InputUserChange change, InputDevice device)
     {
         if(change == InputUserChange.ControlSchemeChanged)

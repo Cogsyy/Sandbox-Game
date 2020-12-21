@@ -81,6 +81,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""ToggleCursor"",
+                    ""type"": ""Button"",
+                    ""id"": ""0e5d1a64-c818-402e-bf24-a108701f58dd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -369,6 +377,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Reload2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c9f3596-9041-4222-81dd-f0d25719d464"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KB&M"",
+                    ""action"": ""ToggleCursor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -424,6 +443,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerOne_Grapple = m_PlayerOne.FindAction("Grapple", throwIfNotFound: true);
         m_PlayerOne_Reload1 = m_PlayerOne.FindAction("Reload1", throwIfNotFound: true);
         m_PlayerOne_Reload2 = m_PlayerOne.FindAction("Reload2", throwIfNotFound: true);
+        m_PlayerOne_ToggleCursor = m_PlayerOne.FindAction("ToggleCursor", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -481,6 +501,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerOne_Grapple;
     private readonly InputAction m_PlayerOne_Reload1;
     private readonly InputAction m_PlayerOne_Reload2;
+    private readonly InputAction m_PlayerOne_ToggleCursor;
     public struct PlayerOneActions
     {
         private @PlayerControls m_Wrapper;
@@ -493,6 +514,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Grapple => m_Wrapper.m_PlayerOne_Grapple;
         public InputAction @Reload1 => m_Wrapper.m_PlayerOne_Reload1;
         public InputAction @Reload2 => m_Wrapper.m_PlayerOne_Reload2;
+        public InputAction @ToggleCursor => m_Wrapper.m_PlayerOne_ToggleCursor;
         public InputActionMap Get() { return m_Wrapper.m_PlayerOne; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -526,6 +548,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Reload2.started -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnReload2;
                 @Reload2.performed -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnReload2;
                 @Reload2.canceled -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnReload2;
+                @ToggleCursor.started -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnToggleCursor;
+                @ToggleCursor.performed -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnToggleCursor;
+                @ToggleCursor.canceled -= m_Wrapper.m_PlayerOneActionsCallbackInterface.OnToggleCursor;
             }
             m_Wrapper.m_PlayerOneActionsCallbackInterface = instance;
             if (instance != null)
@@ -554,6 +579,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Reload2.started += instance.OnReload2;
                 @Reload2.performed += instance.OnReload2;
                 @Reload2.canceled += instance.OnReload2;
+                @ToggleCursor.started += instance.OnToggleCursor;
+                @ToggleCursor.performed += instance.OnToggleCursor;
+                @ToggleCursor.canceled += instance.OnToggleCursor;
             }
         }
     }
@@ -595,5 +623,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnGrapple(InputAction.CallbackContext context);
         void OnReload1(InputAction.CallbackContext context);
         void OnReload2(InputAction.CallbackContext context);
+        void OnToggleCursor(InputAction.CallbackContext context);
     }
 }
